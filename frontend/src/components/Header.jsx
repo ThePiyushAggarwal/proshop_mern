@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Container from 'react-bootstrap/Container'
@@ -8,15 +9,17 @@ function Header() {
     <div>
       <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
         <Container>
-          <Navbar.Brand href='/'>Proshop</Navbar.Brand>
+          <Navbar.Brand as={Link} to='/'>
+            Proshop
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav className='ms-auto'>
-              <Nav.Link href='/cart' className='d-flex'>
+              <Nav.Link as={Link} to='/cart' className='d-flex'>
                 <FaShoppingCart className='align-self-center me-2' />
                 Home
               </Nav.Link>
-              <Nav.Link href='/login' className='d-flex'>
+              <Nav.Link as={Link} to='/login' className='d-flex'>
                 <FaUser className='align-self-center me-2' />
                 Sign In
               </Nav.Link>

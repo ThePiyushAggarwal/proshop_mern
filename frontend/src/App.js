@@ -1,19 +1,27 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Container from 'react-bootstrap/Container'
 import Home from './pages/Home'
+import Product from './pages/Product'
+import PageNotFound from './pages/PageNotFound'
 
 function App() {
   return (
     <>
-      <Header />
-      <main className='py-3'>
-        <Container>
-          <h1>Welcome to Proshop</h1>
-          <Home />
-        </Container>
-      </main>
-      <Footer />
+      <BrowserRouter>
+        <Header />
+        <main className='py-3'>
+          <Container>
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/product/:id' element={<Product />} />
+              <Route path='*' element={<PageNotFound />} />
+            </Routes>
+          </Container>
+        </main>
+        <Footer />
+      </BrowserRouter>
     </>
   )
 }
