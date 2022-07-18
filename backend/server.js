@@ -4,8 +4,11 @@ const app = express()
 const PORT = process.env.PORT || 5000
 const products = require('./data/products')
 const cors = require('cors')
+const connectDB = require('./config/db')
 
 app.use(cors({ origin: 'http://localhost:3000' }))
+
+connectDB()
 
 app.get('/', (req, res) => {
   res.send('Welcome to ProShop API')
