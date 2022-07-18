@@ -1,4 +1,4 @@
-import bcryptjs from 'bcryptjs'
+const bcryptjs = require('bcryptjs')
 
 const users = [
   {
