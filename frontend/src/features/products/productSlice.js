@@ -31,10 +31,6 @@ export const productSlice = createSlice({
       })
       .addCase(getProducts.rejected, (state, { payload }) => {
         state.loading = false
-        console.log(payload)
-        console.log(payload.response)
-        console.log(payload.response.data)
-        console.log(payload.response.data.message)
         state.error =
           payload.response && payload.response.data.message
             ? payload.response.data.message
