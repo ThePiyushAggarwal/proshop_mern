@@ -1,7 +1,9 @@
 import { useEffect } from 'react'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Alert from 'react-bootstrap/Alert'
 import Product from '../components/Product'
+import Loader from '../components/Loader'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProducts } from '../features/products/productSlice'
 
@@ -17,9 +19,9 @@ function Home() {
     <>
       <h1>Latest Products</h1>
       {loading ? (
-        'loading'
+        <Loader />
       ) : error ? (
-        <h1>{error}</h1>
+        <Alert variant='danger'>{error}</Alert>
       ) : (
         <Row>
           {products?.map((product) => (
