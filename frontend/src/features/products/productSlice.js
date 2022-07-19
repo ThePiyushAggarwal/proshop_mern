@@ -12,10 +12,22 @@ export const getProducts = createAsyncThunk(
   }
 )
 
+export const getProductById = createAsyncThunk(
+  'products/getProductsById',
+  async (id, thunkAPI) => {
+    try {
+      return await axios.get(`/api/products/${id}`).then((res) => res.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }
+)
+
 export const productSlice = createSlice({
   name: 'products',
   initialState: {
     products: [],
+    product: {},
     error: '',
     loading: false,
   },
@@ -30,6 +42,20 @@ export const productSlice = createSlice({
         state.products = payload
       })
       .addCase(getProducts.rejected, (state, { payload }) => {
+        state.loading = false
+        state.error =
+          payload.response && payload.response.data.message
+            ? payload.response.data.message
+            : payload.message
+      })
+      .addCase(getProductById.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(getProductById.fulfilled, (state, { payload }) => {
+        state.loading = false
+        state.product = payload
+      })
+      .addCase(getProductById.rejected, (state, { payload }) => {
         state.loading = false
         state.error =
           payload.response && payload.response.data.message

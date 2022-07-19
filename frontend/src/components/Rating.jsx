@@ -1,8 +1,8 @@
 import { FaStar, FaRegStar, FaStarHalfAlt } from 'react-icons/fa'
 
 function Rating({ value, text }) {
-  const fullStar = value.toString().split('.')[0]
-  const digitAfterDecimal = value.toString().split('.')[1]
+  const fullStar = value?.toString().split('.')[0]
+  const digitAfterDecimal = value?.toString().split('.')[1]
 
   return (
     <div className='rating'>

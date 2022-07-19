@@ -1,34 +1,36 @@
 import { Link, useParams } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image'
 import ListGroup from 'react-bootstrap/ListGroup'
 import Card from 'react-bootstrap/Card'
+import Alert from 'react-bootstrap/Alert'
 import Button from 'react-bootstrap/Button'
 import Rating from '../components/Rating'
-import axios from 'axios'
+import Loader from '../components/Loader'
+import { useDispatch, useSelector } from 'react-redux'
+import { getProductById } from '../features/products/productSlice'
 
 function Product() {
   const { id } = useParams()
-  const [product, setProduct] = useState()
+  const dispatch = useDispatch()
+  const { product, loading, error } = useSelector((state) => state.product)
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      const { data } = await axios.get(
-        `http://localhost:5000/api/products/${id}`
-      )
-      setProduct(data)
-    }
-    fetchProduct()
-  }, [id])
+    dispatch(getProductById(id))
+  }, [dispatch, id])
 
-  if (product)
-    return (
-      <>
-        <Button as={Link} to='/' className='btn-light'>
-          Go Back
-        </Button>
+  return (
+    <>
+      <Button as={Link} to='/' className='btn-light'>
+        Go Back
+      </Button>
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <Alert variant='danger'>{error}</Alert>
+      ) : (
         <Row>
           <Col md={6}>
             <Image src={product.image} alt={product.name} fluid />
@@ -82,8 +84,9 @@ function Product() {
             </Card>
           </Col>
         </Row>
-      </>
-    )
+      )}
+    </>
+  )
 }
 
 export default Product
