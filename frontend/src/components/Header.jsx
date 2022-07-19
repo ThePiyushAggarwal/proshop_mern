@@ -17,7 +17,7 @@ function Header() {
             <Nav className='ms-auto'>
               <Nav.Link as={Link} to='/cart' className='d-flex'>
                 <FaShoppingCart className='align-self-center me-2' />
-                Home
+                Cart
               </Nav.Link>
               <Nav.Link as={Link} to='/login' className='d-flex'>
                 <FaUser className='align-self-center me-2' />
