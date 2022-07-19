@@ -11,6 +11,11 @@
     "data:import": "node backend/seeder",
     "data:destroy": "node backend/seeder -d"
   },
+  "nodemonConfig": {
+    "ignore": [
+      "frontend"
+    ]
+  },
   "author": "Piyush Aggarwal",
   "license": "MIT",
   "dependencies": {
