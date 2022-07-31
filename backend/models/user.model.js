@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcryptjs')
 
 const userSchema = mongoose.Schema(
   {
@@ -23,5 +24,10 @@ const userSchema = mongoose.Schema(
   },
   { timestamps: true }
 )
+
+// This wasn't working when I was using arrow syntax
+userSchema.methods.matchPassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password)
+}
 
 module.exports = mongoose.model('User', userSchema)
