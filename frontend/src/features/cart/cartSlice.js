@@ -22,6 +22,7 @@ export const cartSlice = createSlice({
       if (itemExists) {
         state.cartItems = state.cartItems.filter((x) => x.id !== payload)
       }
+      localStorage.setItem('cartItems', JSON.stringify(state.cartItems))
     },
   },
 })
