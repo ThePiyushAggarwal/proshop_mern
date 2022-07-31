@@ -13,19 +13,21 @@ function Cart() {
   const cartItems = useSelector((state) => state.cart.cartItems)
 
   useEffect(() => {
-    if (product._id === id) {
-      dispatch(
-        addItem({
-          id: product._id,
-          name: product.name,
-          image: product.image,
-          price: product.price,
-          countInStock: product.countInStock,
-          qty,
-        })
-      )
-    } else {
-      dispatch(getProductById(id))
+    if (id) {
+      if (product._id === id) {
+        dispatch(
+          addItem({
+            id: product._id,
+            name: product.name,
+            image: product.image,
+            price: product.price,
+            countInStock: product.countInStock,
+            qty,
+          })
+        )
+      } else {
+        dispatch(getProductById(id))
+      }
     }
   }, [dispatch, id, qty, product])
 
