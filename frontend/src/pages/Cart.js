@@ -15,7 +15,7 @@ import { FaTrash } from 'react-icons/fa'
 
 function Cart() {
   const dispatch = useDispatch()
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const { id } = useParams()
   const qty = searchParams.get('qty')
   const product = useSelector((state) => state.product.product)
@@ -24,6 +24,9 @@ function Cart() {
   useEffect(() => {
     if (id) {
       if (product._id === id) {
+        if (+qty > product.countInStock) {
+          return setSearchParams({ qty: product.countInStock })
+        }
         dispatch(
           addItem({
             id: product._id,
@@ -38,7 +41,7 @@ function Cart() {
         dispatch(getProductById(id))
       }
     }
-  }, [dispatch, id, qty, product])
+  }, [dispatch, id, qty, product, setSearchParams])
 
   const checkoutHandler = () => {
     console.log('checkout')
@@ -79,7 +82,7 @@ function Cart() {
                           })
                         )
                       }
-                      defaultValue={item.qty}
+                      value={item.qty}
                     >
                       {[...Array(item.countInStock).keys()].map((x) => (
                         <option key={x} value={x + 1}>
