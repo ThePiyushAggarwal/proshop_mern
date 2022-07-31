@@ -10,11 +10,16 @@ app.use(cors({ origin: 'http://localhost:3000' }))
 
 connectDB()
 
+// Body parser
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+
 app.get('/', (req, res) => {
   res.send('Welcome to ProShop API')
 })
 
 app.use('/api/products', require('./routes/product.routes'))
+app.use('/api/users', require('./routes/user.routes'))
 
 // Error Handler
 app.use(notFound)
