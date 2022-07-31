@@ -81,7 +81,7 @@ function Product() {
                 </ListGroup.Item>
 
                 {/* Select quantity button */}
-                {product.countInStock && (
+                {product.countInStock > 0 && (
                   <ListGroup.Item>
                     <Row>
                       <Col>Qty:</Col>
