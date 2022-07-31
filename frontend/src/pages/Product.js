@@ -80,10 +80,11 @@ function Product() {
                   </Row>
                 </ListGroup.Item>
 
+                {/* Select quantity button */}
                 {product.countInStock && (
                   <ListGroup.Item>
                     <Row>
-                      <Col>Qty</Col>
+                      <Col>Qty:</Col>
                       <Col xs={8}>
                         <Form.Select onChange={(e) => setQty(e.target.value)}>
                           {[...Array(product.countInStock).keys()].map((x) => (
