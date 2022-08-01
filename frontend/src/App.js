@@ -5,6 +5,7 @@ import Container from 'react-bootstrap/Container'
 import Home from './pages/Home'
 import Product from './pages/Product'
 import Cart from './pages/Cart'
+import Login from './pages/Login'
 import PageNotFound from './pages/PageNotFound'
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Container>
             <Routes>
               <Route path='/' element={<Home />} />
+              <Route path='/login' element={<Login />} />
               <Route path='/product/:id' element={<Product />} />
               <Route path='/cart' element={<Cart />}>
                 <Route path=':id' element={<Cart />} />
