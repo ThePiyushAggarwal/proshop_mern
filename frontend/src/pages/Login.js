@@ -41,6 +41,7 @@ function Login() {
           <Form.Control
             type='email'
             placeholder='Enter Email'
+            required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -50,6 +51,7 @@ function Login() {
           <Form.Control
             type='password'
             placeholder='Enter Password'
+            required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -60,7 +62,7 @@ function Login() {
       </Form>
       <Row className='py-3'>
         <Col>
-          New Costumer? <Link to='/'>Register</Link>
+          New Costumer? <Link to='/register'>Register</Link>
         </Col>
       </Row>
     </FormContainer>
