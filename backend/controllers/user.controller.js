@@ -64,16 +64,21 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     user.password = req.body.password
   }
 
-  const updatedUser = await user.save()
-
-  if (updatedUser) {
-    res.send({
-      _id: updatedUser._id,
-      name: updatedUser.name,
-      email: updatedUser.email,
-      isAdmin: updatedUser.isAdmin,
-      token: generateToken(updatedUser._id),
-    })
+  try {
+    const updatedUser = await user.save()
+    if (updatedUser) {
+      res.send({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin,
+        token: generateToken(updatedUser._id),
+      })
+    }
+  } catch (error) {
+    if (error.code === 11000) {
+      throw new Error('Email already exists')
+    }
   }
 })
 

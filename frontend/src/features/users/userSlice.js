@@ -38,9 +38,30 @@ export const registerUser = createAsyncThunk(
   }
 )
 
+export const updateUser = createAsyncThunk(
+  'users/updateUser',
+  async (userDetails, thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      }
+      const { data } = await axios.put(
+        '/api/users/profile',
+        userDetails,
+        config
+      )
       return data
     } catch (error) {
-      return thunkAPI.rejectWithValue(error)
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
     }
   }
 )
@@ -51,6 +72,7 @@ export const userSlice = createSlice({
     user: JSON.parse(localStorage.getItem('userInfo')) || null,
     loading: false,
     error: '',
+    updateSuccess: false,
   },
   reducers: {
     logoutUser: (state) => {
@@ -89,6 +111,18 @@ export const userSlice = createSlice({
         state.loading = false
         state.error = payload
       })
+      .addCase(updateUser.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(updateUser.fulfilled, (state, { payload }) => {
+        state.loading = false
+        state.user = payload
+        state.updateSuccess = true
+        localStorage.setItem('userInfo', JSON.stringify(payload))
+      })
+      .addCase(updateUser.rejected, (state, { payload }) => {
+        state.loading = false
+        state.error = payload
       })
   },
 })
