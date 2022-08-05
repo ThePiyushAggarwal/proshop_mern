@@ -43,15 +43,20 @@ export const userSlice = createSlice({
       localStorage.removeItem('userInfo')
       state.user = null
     },
+    resetError: (state) => {
+      state.error = ''
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.pending, (state) => {
         state.loading = true
+        state.error = ''
       })
       .addCase(loginUser.fulfilled, (state, { payload }) => {
         state.loading = false
         state.user = payload
+        state.error = ''
         localStorage.setItem('userInfo', JSON.stringify(payload))
       })
       .addCase(loginUser.rejected, (state, { payload }) => {
@@ -79,6 +84,6 @@ export const userSlice = createSlice({
   },
 })
 
-export const { logoutUser } = userSlice.actions
+export const { logoutUser, resetError } = userSlice.actions
 
 export default userSlice.reducer

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { loginUser } from '../features/users/userSlice'
+import { loginUser, resetError } from '../features/users/userSlice'
 import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
 import Form from 'react-bootstrap/Form'
@@ -18,15 +18,15 @@ function Login() {
   const [password, setPassword] = useState('')
 
   useEffect(() => {
+    dispatch(resetError())
     if (user) {
       navigate('/')
     }
-  }, [navigate, user])
+  }, [navigate, user, dispatch])
 
   const onSubmit = (e) => {
     e.preventDefault()
     dispatch(loginUser({ email, password }))
-    setEmail('')
     setPassword('')
   }
 
