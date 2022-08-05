@@ -5,15 +5,16 @@ export const loginUser = createAsyncThunk(
   'users/loginUser',
   async (loginDetails, thunkAPI) => {
     try {
-      const config = { 'Content-Type': 'application/json' }
-      const { data } = await axios.post(
-        '/api/users/login',
-        loginDetails,
-        config
-      )
+      const { data } = await axios.post('/api/users/login', loginDetails)
       return data
     } catch (error) {
-      return thunkAPI.rejectWithValue(error)
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
     }
   }
 )
@@ -22,8 +23,21 @@ export const registerUser = createAsyncThunk(
   'users/registerUser',
   async (userDetails, thunkAPI) => {
     try {
-      const config = { 'Content-Type': 'application/json' }
-      const { data } = await axios.post('/api/users', userDetails, config)
+      // const config = { headers: { 'Content-Type': 'application/json' } }
+      const { data } = await axios.post('/api/users', userDetails)
+      return data
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
       return data
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -61,10 +75,7 @@ export const userSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, { payload }) => {
         state.loading = false
-        state.error =
-          payload.response && payload.response.data.message
-            ? payload.response.data.message
-            : payload.message
+        state.error = payload
       })
       .addCase(registerUser.pending, (state) => {
         state.loading = true
@@ -76,10 +87,8 @@ export const userSlice = createSlice({
       })
       .addCase(registerUser.rejected, (state, { payload }) => {
         state.loading = false
-        state.error =
-          payload.response && payload.response.data.message
-            ? payload.response.data.message
-            : payload.message
+        state.error = payload
+      })
       })
   },
 })

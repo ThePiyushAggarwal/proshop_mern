@@ -7,7 +7,13 @@ export const getProducts = createAsyncThunk(
     try {
       return await axios.get('/api/products').then((res) => res.data)
     } catch (error) {
-      return thunkAPI.rejectWithValue(error)
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
     }
   }
 )
@@ -18,7 +24,13 @@ export const getProductById = createAsyncThunk(
     try {
       return await axios.get(`/api/products/${id}`).then((res) => res.data)
     } catch (error) {
-      return thunkAPI.rejectWithValue(error)
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
     }
   }
 )
@@ -43,10 +55,7 @@ export const productSlice = createSlice({
       })
       .addCase(getProducts.rejected, (state, { payload }) => {
         state.loading = false
-        state.error =
-          payload.response && payload.response.data.message
-            ? payload.response.data.message
-            : payload.message
+        state.error = payload
       })
       .addCase(getProductById.pending, (state) => {
         state.loading = true
@@ -57,10 +66,7 @@ export const productSlice = createSlice({
       })
       .addCase(getProductById.rejected, (state, { payload }) => {
         state.loading = false
-        state.error =
-          payload.response && payload.response.data.message
-            ? payload.response.data.message
-            : payload.message
+        state.error = payload
       })
   },
 })
