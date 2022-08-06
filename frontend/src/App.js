@@ -11,6 +11,7 @@ import Profile from './pages/Profile'
 import Shipping from './pages/Shipping'
 import Payment from './pages/Payment'
 import PlaceOrder from './pages/PlaceOrder'
+import Order from './pages/Order'
 import PageNotFound from './pages/PageNotFound'
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
               <Route path='/shipping' element={<Shipping />} />
               <Route path='/payment' element={<Payment />} />
               <Route path='/placeOrder' element={<PlaceOrder />} />
+              <Route path='/order/:orderId' element={<Order />} />
               <Route path='/product/:id' element={<Product />} />
               <Route path='/cart' element={<Cart />}>
                 <Route path=':id' element={<Cart />} />

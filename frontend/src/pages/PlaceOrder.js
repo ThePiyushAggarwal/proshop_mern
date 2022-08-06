@@ -9,7 +9,7 @@ import ListGroup from 'react-bootstrap/ListGroup'
 import Image from 'react-bootstrap/Image'
 import Card from 'react-bootstrap/Card'
 import { useNavigate, Link } from 'react-router-dom'
-import { createOrder } from '../features/orders/orderSlice'
+import { createOrder, resetOrderState } from '../features/orders/orderSlice'
 
 export default function PlaceOrder() {
   const dispatch = useDispatch()
@@ -18,19 +18,18 @@ export default function PlaceOrder() {
   const shippingAddress = useSelector((state) => state.cart.shippingAddress)
   const cartItems = useSelector((state) => state.cart.cartItems)
   const user = useSelector((state) => state.user.user)
-  const { order, error } = useSelector((state) => state.order)
+  const { error, orderId } = useSelector((state) => state.order)
 
   // Calculations
   const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2)
   }
-  const itemsPrice = cartItems.reduce(
-    (sum, item) => item.price * item.qty + sum,
-    0
-  )
-  const shippingPrice = itemsPrice > 100 ? 0 : 10
+  const itemsPrice = +cartItems
+    .reduce((sum, item) => item.price * item.qty + sum, 0)
+    .toFixed(2)
+  const shippingPrice = itemsPrice >= 100 ? 0 : 10
   const taxPrice = +(0.15 * itemsPrice).toFixed(2)
-  const totalPrice = itemsPrice + shippingPrice + taxPrice
+  const totalPrice = +(itemsPrice + shippingPrice + taxPrice).toFixed(2)
 
   useEffect(() => {
     if (!user) {
@@ -45,10 +44,10 @@ export default function PlaceOrder() {
     if (!paymentMethod) {
       return navigate('/payment')
     }
-    if (order._id) {
-      return navigate(`/order/${order._id}`)
+    if (orderId) {
+      return navigate(`/order/${orderId}`)
     }
-  }, [navigate, user, shippingAddress, paymentMethod, cartItems, order])
+  }, [navigate, user, shippingAddress, paymentMethod, cartItems, orderId])
 
   const placeOrderHandler = () => {
     dispatch(

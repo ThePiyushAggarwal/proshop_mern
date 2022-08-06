@@ -118,7 +118,10 @@ function Cart() {
                 Subtotal ({cartItems.reduce((acc, item) => item.qty + acc, 0)})
                 items
               </h2>
-              ${cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)}
+              $
+              {cartItems
+                .reduce((acc, item) => acc + item.price * item.qty, 0)
+                .toFixed(2)}
             </ListGroup.Item>
             <ListGroup.Item>
               <Button

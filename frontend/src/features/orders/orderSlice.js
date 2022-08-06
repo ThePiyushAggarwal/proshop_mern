@@ -12,7 +12,7 @@ export const createOrder = createAsyncThunk(
         },
       }
       const { data } = await axios.post('/api/orders', orderDetails, config)
-      return data
+      return data._id
     } catch (error) {
       const message =
         (error.response &&
@@ -48,25 +48,33 @@ export const getOrderDetails = createAsyncThunk(
   }
 )
 
+const initialState = {
+  order: {},
+  orderId: '',
+  error: '',
+  loading: true,
+}
+
 export const orderSlice = createSlice({
   name: 'orders',
-  initialState: {
-    order: {},
-    error: '',
-    loading: false,
+  initialState,
+  reducers: {
+    resetOrderId: (state) => {
+      state.orderId = ''
+    },
+    resetOrderState: (state) => {
+      state = initialState
+    },
   },
-  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(createOrder.pending, (state) => {
-        state.loading = true
+        state.error = ''
       })
       .addCase(createOrder.fulfilled, (state, { payload }) => {
-        state.loading = false
-        state.order = payload
+        state.orderId = payload
       })
       .addCase(createOrder.rejected, (state, { payload }) => {
-        state.loading = false
         state.error = payload
       })
       .addCase(getOrderDetails.pending, (state) => {
@@ -82,5 +90,7 @@ export const orderSlice = createSlice({
       })
   },
 })
+
+export const { resetOrderId, resetOrderState } = orderSlice.actions
 
 export default orderSlice.reducer
