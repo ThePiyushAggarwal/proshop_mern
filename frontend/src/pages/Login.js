@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { loginUser, resetError } from '../features/users/userSlice'
 import FormContainer from '../components/FormContainer'
@@ -13,6 +13,7 @@ import Alert from 'react-bootstrap/Alert'
 function Login() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const { loading, error, user } = useSelector((state) => state.user)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -20,9 +21,12 @@ function Login() {
   useEffect(() => {
     dispatch(resetError())
     if (user) {
+      if (searchParams.get('redirect') === 'shipping') {
+        return navigate('/shipping')
+      }
       navigate('/')
     }
-  }, [navigate, user, dispatch])
+  }, [navigate, user, dispatch, searchParams])
 
   const onSubmit = (e) => {
     e.preventDefault()

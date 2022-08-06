@@ -8,6 +8,7 @@ import Cart from './pages/Cart'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Profile from './pages/Profile'
+import Shipping from './pages/Shipping'
 import PageNotFound from './pages/PageNotFound'
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
               <Route path='/profile' element={<Profile />} />
+              <Route path='/shipping' element={<Shipping />} />
               <Route path='/product/:id' element={<Product />} />
               <Route path='/cart' element={<Cart />}>
                 <Route path=':id' element={<Cart />} />

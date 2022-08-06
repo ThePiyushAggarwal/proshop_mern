@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useParams, useSearchParams, Link } from 'react-router-dom'
+import { useParams, useSearchParams, Link, useNavigate } from 'react-router-dom'
 import { addItem, removeItem } from '../features/cart/cartSlice'
 import { getProductById } from '../features/products/productSlice'
 import { useDispatch, useSelector } from 'react-redux'
@@ -14,12 +14,14 @@ import Card from 'react-bootstrap/Card'
 import { FaTrash } from 'react-icons/fa'
 
 function Cart() {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const [searchParams, setSearchParams] = useSearchParams()
   const { id } = useParams()
   const qty = searchParams.get('qty')
   const product = useSelector((state) => state.product.product)
   const cartItems = useSelector((state) => state.cart.cartItems)
+  const user = useSelector((state) => state.user.user)
 
   useEffect(() => {
     if (id) {
@@ -44,7 +46,10 @@ function Cart() {
   }, [dispatch, id, qty, product, setSearchParams])
 
   const checkoutHandler = () => {
-    console.log('checkout')
+    if (!user) {
+      return navigate('/login?redirect=shipping')
+    }
+    navigate('/shipping')
   }
 
   return (
@@ -53,7 +58,7 @@ function Cart() {
         <h1>Shopping Cart</h1>
         {cartItems.length === 0 ? (
           <Alert>
-            Your cart is empty <Link to='/'>Go Back</Link>{' '}
+            Your cart is empty <Link to='/'>Go Back</Link>
           </Alert>
         ) : (
           <ListGroup variant='flush'>
