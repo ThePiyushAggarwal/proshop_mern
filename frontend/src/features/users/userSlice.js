@@ -23,7 +23,6 @@ export const registerUser = createAsyncThunk(
   'users/registerUser',
   async (userDetails, thunkAPI) => {
     try {
-      // const config = { headers: { 'Content-Type': 'application/json' } }
       const { data } = await axios.post('/api/users', userDetails)
       return data
     } catch (error) {
