@@ -5,6 +5,7 @@ export const cartSlice = createSlice({
   initialState: {
     cartItems: JSON.parse(localStorage.getItem('cartItems')) || [],
     shippingAddress: JSON.parse(localStorage.getItem('shippingAddress')) || {},
+    paymentMethod: JSON.parse(localStorage.getItem('paymentMethod')) || '',
   },
   reducers: {
     addItem: (state, { payload }) => {
@@ -32,9 +33,14 @@ export const cartSlice = createSlice({
         JSON.stringify(state.shippingAddress)
       )
     },
+    savePaymentMethod: (state, { payload }) => {
+      state.paymentMethod = payload
+      localStorage.setItem('paymentMethod', JSON.stringify(state.paymentMethod))
+    },
   },
 })
 
-export const { addItem, removeItem, addShippingAddress } = cartSlice.actions
+export const { addItem, removeItem, addShippingAddress, savePaymentMethod } =
+  cartSlice.actions
 
 export default cartSlice.reducer
