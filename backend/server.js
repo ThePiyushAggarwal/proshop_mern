@@ -20,6 +20,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/products', require('./routes/product.routes'))
 app.use('/api/users', require('./routes/user.routes'))
+app.use('/api/orders', require('./routes/order.routes'))
 
 // Error Handler
 app.use(notFound)
