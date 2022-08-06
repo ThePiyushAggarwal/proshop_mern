@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import CheckoutSteps from '../components/CheckoutSteps'
-import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Alert from 'react-bootstrap/Alert'
 import Row from 'react-bootstrap/Row'
@@ -10,6 +9,7 @@ import ListGroup from 'react-bootstrap/ListGroup'
 import Image from 'react-bootstrap/Image'
 import Card from 'react-bootstrap/Card'
 import { useNavigate, Link } from 'react-router-dom'
+import { createOrder } from '../features/orders/orderSlice'
 
 export default function PlaceOrder() {
   const dispatch = useDispatch()
@@ -18,17 +18,19 @@ export default function PlaceOrder() {
   const shippingAddress = useSelector((state) => state.cart.shippingAddress)
   const cartItems = useSelector((state) => state.cart.cartItems)
   const user = useSelector((state) => state.user.user)
+  const { order, error } = useSelector((state) => state.order)
 
   // Calculations
   const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2)
   }
-  const itemsPrice = addDecimals(
-    cartItems.reduce((sum, item) => item.price * item.qty + sum, 0)
+  const itemsPrice = cartItems.reduce(
+    (sum, item) => item.price * item.qty + sum,
+    0
   )
-  const shippingPrice = addDecimals(itemsPrice > 100 ? 0 : 10)
-  const taxPrice = addDecimals(+(0.15 * itemsPrice).toFixed(2))
-  const totalPrice = addDecimals(+itemsPrice + +shippingPrice + +taxPrice)
+  const shippingPrice = itemsPrice > 100 ? 0 : 10
+  const taxPrice = +(0.15 * itemsPrice).toFixed(2)
+  const totalPrice = itemsPrice + shippingPrice + taxPrice
 
   useEffect(() => {
     if (!user) {
@@ -43,9 +45,24 @@ export default function PlaceOrder() {
     if (!paymentMethod) {
       return navigate('/payment')
     }
-  }, [navigate, user, shippingAddress, paymentMethod, cartItems])
+    if (order._id) {
+      return navigate(`/order/${order._id}`)
+    }
+  }, [navigate, user, shippingAddress, paymentMethod, cartItems, order])
 
-  const placeOrderHandler = () => {}
+  const placeOrderHandler = () => {
+    dispatch(
+      createOrder({
+        orderItems: cartItems,
+        shippingAddress,
+        paymentMethod,
+        itemsPrice,
+        shippingPrice,
+        taxPrice,
+        totalPrice,
+      })
+    )
+  }
 
   return (
     <>
@@ -98,26 +115,29 @@ export default function PlaceOrder() {
               <ListGroup.Item>
                 <Row>
                   <Col>Items Price</Col>
-                  <Col>${itemsPrice}</Col>
+                  <Col>${addDecimals(itemsPrice)}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Shippping Price</Col>
-                  <Col>${shippingPrice}</Col>
+                  <Col>${addDecimals(shippingPrice)}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Tax</Col>
-                  <Col>${taxPrice}</Col>
+                  <Col>${addDecimals(taxPrice)}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>${totalPrice}</Col>
+                  <Col>${addDecimals(totalPrice)}</Col>
                 </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                {error && <Alert variant='danger'>{error}</Alert>}
               </ListGroup.Item>
               <ListGroup.Item>
                 <Button
