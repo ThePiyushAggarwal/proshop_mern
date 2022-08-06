@@ -12,6 +12,7 @@ export default function Payment() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const shippingAddress = useSelector((state) => state.cart.shippingAddress)
+  const cartItems = useSelector((state) => state.cart.cartItems)
   const savedPaymentMethod = useSelector((state) => state.cart.paymentMethod)
   const user = useSelector((state) => state.user.user)
   const [paymentMethod, setPaymentMethod] = useState(savedPaymentMethod)
@@ -20,10 +21,13 @@ export default function Payment() {
     if (!user) {
       return navigate('/login')
     }
+    if (cartItems.length === 0) {
+      return navigate('/')
+    }
     if (!shippingAddress) {
       return navigate('/shipping')
     }
-  }, [navigate, user, shippingAddress])
+  }, [navigate, user, shippingAddress, cartItems])
 
   const onSubmit = (e) => {
     e.preventDefault()

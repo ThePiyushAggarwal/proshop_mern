@@ -34,13 +34,16 @@ export default function PlaceOrder() {
     if (!user) {
       return navigate('/login')
     }
+    if (cartItems.length === 0) {
+      return navigate('/')
+    }
     if (!shippingAddress) {
       return navigate('/shipping')
     }
     if (!paymentMethod) {
       return navigate('/payment')
     }
-  }, [navigate, user, shippingAddress, paymentMethod])
+  }, [navigate, user, shippingAddress, paymentMethod, cartItems])
 
   const placeOrderHandler = () => {}
 

@@ -11,6 +11,7 @@ export default function Shipping() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const shippingAddress = useSelector((state) => state.cart.shippingAddress)
+  const cartItems = useSelector((state) => state.cart.cartItems)
   const user = useSelector((state) => state.user.user)
   const [address, setAddress] = useState(shippingAddress.address)
   const [city, setCity] = useState(shippingAddress.city)
@@ -19,9 +20,12 @@ export default function Shipping() {
 
   useEffect(() => {
     if (!user) {
-      navigate('/login')
+      return navigate('/login')
     }
-  }, [navigate, user])
+    if (cartItems.length === 0) {
+      return navigate('/')
+    }
+  }, [navigate, user, cartItems])
 
   const onSubmit = (e) => {
     e.preventDefault()
