@@ -48,9 +48,37 @@ export const getOrderDetails = createAsyncThunk(
   }
 )
 
+export const orderPay = createAsyncThunk(
+  'orders/orderPay',
+  async (orderId, paymentResult, thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      }
+      const { data } = await axios.put(
+        `/api/orders/${orderId}/`,
+        paymentResult,
+        config
+      )
+      return data
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 const initialState = {
   order: {},
   orderId: '',
+  orderPaySuccess: false,
   error: '',
   loading: true,
 }
@@ -77,6 +105,7 @@ export const orderSlice = createSlice({
       .addCase(createOrder.rejected, (state, { payload }) => {
         state.error = payload
       })
+      //
       .addCase(getOrderDetails.pending, (state) => {
         state.loading = true
       })
@@ -85,6 +114,19 @@ export const orderSlice = createSlice({
         state.order = payload
       })
       .addCase(getOrderDetails.rejected, (state, { payload }) => {
+        state.loading = false
+        state.error = payload
+      })
+      //
+      .addCase(orderPay.pending, (state) => {
+        state.loading = true
+        state.orderPaySuccess = false
+      })
+      .addCase(orderPay.fulfilled, (state, { payload }) => {
+        state.orderPaySuccess = true
+        state.loading = false
+      })
+      .addCase(orderPay.rejected, (state, { payload }) => {
         state.loading = false
         state.error = payload
       })
