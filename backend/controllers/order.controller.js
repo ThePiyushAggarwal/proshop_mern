@@ -23,7 +23,7 @@ const getOrderById = asyncHandler(async (req, res) => {
 })
 
 // @desc Update order to be paid
-// @route GET /api/orders/:id/pay
+// @route PUT /api/orders/:id/pay
 // @access Private
 const updateOrderToPaid = asyncHandler(async (req, res) => {
   const {
