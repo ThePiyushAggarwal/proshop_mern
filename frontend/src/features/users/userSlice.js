@@ -65,6 +65,29 @@ export const updateUser = createAsyncThunk(
   }
 )
 
+export const getUsers = createAsyncThunk(
+  'users/getUsers',
+  async (_, thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      }
+      const { data } = await axios.get('/api/users', config)
+      return data
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 export const userSlice = createSlice({
   name: 'users',
   initialState: {
@@ -72,6 +95,10 @@ export const userSlice = createSlice({
     loading: false,
     error: '',
     updateSuccess: false,
+    // Users List States
+    userList: [],
+    loadingUserList: false,
+    errorUserList: '',
   },
   reducers: {
     logoutUser: (state) => {
@@ -98,6 +125,7 @@ export const userSlice = createSlice({
         state.loading = false
         state.error = payload
       })
+      //
       .addCase(registerUser.pending, (state) => {
         state.loading = true
       })
@@ -110,6 +138,7 @@ export const userSlice = createSlice({
         state.loading = false
         state.error = payload
       })
+      //
       .addCase(updateUser.pending, (state) => {
         state.loading = true
       })
@@ -122,6 +151,20 @@ export const userSlice = createSlice({
       .addCase(updateUser.rejected, (state, { payload }) => {
         state.loading = false
         state.error = payload
+      })
+      //
+      .addCase(getUsers.pending, (state) => {
+        state.loadingUserList = true
+        state.errorUserList = ''
+      })
+      .addCase(getUsers.fulfilled, (state, { payload }) => {
+        state.loadingUserList = false
+        state.userList = payload
+        state.errorUserList = ''
+      })
+      .addCase(getUsers.rejected, (state, { payload }) => {
+        state.loadingUserList = false
+        state.errorUserList = payload
       })
   },
 })

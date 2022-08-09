@@ -30,6 +30,19 @@ function Header() {
                   Cart
                 </Nav.Link>
               </Nav.Item>
+              {user?.isAdmin && (
+                <NavDropdown title='admin' id='adminmenu'>
+                  <NavDropdown.Item as={Link} to='/admin/userList'>
+                    User List
+                  </NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to='/admin/productList'>
+                    Product List
+                  </NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to='/admin/orderList'>
+                    Order List
+                  </NavDropdown.Item>
+                </NavDropdown>
+              )}
               {user ? (
                 <NavDropdown title={user.name} id='username'>
                   <NavDropdown.Item as={Link} to='/profile'>
