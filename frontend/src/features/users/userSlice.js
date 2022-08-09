@@ -88,22 +88,25 @@ export const getUsers = createAsyncThunk(
   }
 )
 
+const initialState = {
+  user: JSON.parse(localStorage.getItem('userInfo')) || null,
+  loading: false,
+  error: '',
+  updateSuccess: false,
+  // Users List States
+  userList: [],
+  loadingUserList: false,
+  errorUserList: '',
+}
+
 export const userSlice = createSlice({
   name: 'users',
-  initialState: {
-    user: JSON.parse(localStorage.getItem('userInfo')) || null,
-    loading: false,
-    error: '',
-    updateSuccess: false,
-    // Users List States
-    userList: [],
-    loadingUserList: false,
-    errorUserList: '',
-  },
+  initialState,
   reducers: {
     logoutUser: (state) => {
       localStorage.removeItem('userInfo')
       state.user = null
+      state = initialState
     },
     resetError: (state) => {
       state.error = ''

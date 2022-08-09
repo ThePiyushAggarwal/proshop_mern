@@ -19,6 +19,9 @@ export default function UsersList() {
     if (!user) {
       navigate('/')
     }
+    if (!user?.isAdmin) {
+      navigate('/')
+    }
     dispatch(getUsers())
   }, [dispatch, user, navigate])
 

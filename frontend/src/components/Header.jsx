@@ -6,12 +6,14 @@ import NavDropdown from 'react-bootstrap/NavDropdown'
 import { FaShoppingCart, FaUser } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import { logoutUser } from '../features/users/userSlice'
+import { resetOrderState } from '../features/orders/orderSlice'
 
 function Header() {
   const user = useSelector((state) => state.user.user)
   const dispatch = useDispatch()
   const signoutHandler = () => {
     dispatch(logoutUser())
+    dispatch(resetOrderState())
   }
 
   return (
