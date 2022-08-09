@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { FaTimes, FaCheck, FaTrash, FaEdit } from 'react-icons/fa'
 import { useSelector, useDispatch } from 'react-redux'
-import { getUsers } from '../features/users/userSlice'
+import { getUsers, deleteUser } from '../features/users/userSlice'
 import Loader from '../components/Loader'
 import Table from 'react-bootstrap/Table'
 import Button from 'react-bootstrap/Button'
@@ -11,9 +11,8 @@ import Alert from 'react-bootstrap/Alert'
 export default function UsersList() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { user, loadingUserList, errorUserList, userList } = useSelector(
-    (state) => state.user
-  )
+  const { user, loadingUserList, errorUserList, userList, successDelete } =
+    useSelector((state) => state.user)
 
   useEffect(() => {
     if (!user) {
@@ -23,9 +22,13 @@ export default function UsersList() {
       navigate('/')
     }
     dispatch(getUsers())
-  }, [dispatch, user, navigate])
+  }, [dispatch, user, navigate, successDelete])
 
-  const deleteHandler = () => {}
+  const deleteHandler = (id) => {
+    if (window.confirm('Are you sure?')) {
+      dispatch(deleteUser(id))
+    }
+  }
 
   return (
     <>
