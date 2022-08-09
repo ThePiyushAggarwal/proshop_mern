@@ -48,6 +48,29 @@ export const getOrderDetails = createAsyncThunk(
   }
 )
 
+export const getMyOrders = createAsyncThunk(
+  'orders/getMyOrders',
+  async (_, thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      }
+      const { data } = await axios.get(`/api/orders/myOrders`, config)
+      return data
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 export const orderPay = createAsyncThunk(
   'orders/orderPay',
   async (paymentResult, thunkAPI) => {
@@ -81,6 +104,10 @@ const initialState = {
   orderPaySuccess: false,
   error: '',
   loading: true,
+  // States for Get My Orders
+  orders: [],
+  ordersLoading: true,
+  ordersError: '',
 }
 
 export const orderSlice = createSlice({
@@ -118,11 +145,25 @@ export const orderSlice = createSlice({
         state.error = payload
       })
       //
+      .addCase(getMyOrders.pending, (state) => {
+        state.ordersLoading = true
+        state.ordersError = ''
+      })
+      .addCase(getMyOrders.fulfilled, (state, { payload }) => {
+        state.ordersLoading = false
+        state.orders = payload
+        state.ordersError = ''
+      })
+      .addCase(getMyOrders.rejected, (state, { payload }) => {
+        state.ordersLoading = false
+        state.ordersError = payload
+      })
+      //
       .addCase(orderPay.pending, (state) => {
         state.loading = true
         state.orderPaySuccess = false
       })
-      .addCase(orderPay.fulfilled, (state, payload) => {
+      .addCase(orderPay.fulfilled, (state) => {
         state.orderPaySuccess = true
         state.loading = false
       })
