@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
+import setMessage from '../../utils/setMessage'
 
 export const createOrder = createAsyncThunk(
   'orders/createOrder',
@@ -14,12 +15,7 @@ export const createOrder = createAsyncThunk(
       const { data } = await axios.post('/api/orders', orderDetails, config)
       return data._id
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString()
+      const message = setMessage(error)
       return thunkAPI.rejectWithValue(message)
     }
   }
@@ -37,12 +33,7 @@ export const getOrderDetails = createAsyncThunk(
       const { data } = await axios.get(`/api/orders/${orderId}`, config)
       return data
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString()
+      const message = setMessage(error)
       return thunkAPI.rejectWithValue(message)
     }
   }
@@ -60,12 +51,7 @@ export const getMyOrders = createAsyncThunk(
       const { data } = await axios.get(`/api/orders/myOrders`, config)
       return data
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString()
+      const message = setMessage(error)
       return thunkAPI.rejectWithValue(message)
     }
   }
@@ -87,12 +73,7 @@ export const orderPay = createAsyncThunk(
       )
       return data
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString()
+      const message = setMessage(error)
       return thunkAPI.rejectWithValue(message)
     }
   }

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
+import setMessage from '../../utils/setMessage'
 
 export const getProducts = createAsyncThunk(
   'products/getProducts',
@@ -7,12 +8,7 @@ export const getProducts = createAsyncThunk(
     try {
       return await axios.get('/api/products').then((res) => res.data)
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString()
+      const message = setMessage(error)
       return thunkAPI.rejectWithValue(message)
     }
   }
@@ -24,12 +20,7 @@ export const getProductById = createAsyncThunk(
     try {
       return await axios.get(`/api/products/${id}`).then((res) => res.data)
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString()
+      const message = setMessage(error)
       return thunkAPI.rejectWithValue(message)
     }
   }

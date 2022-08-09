@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
+import setMessage from '../../utils/setMessage'
 
 export const loginUser = createAsyncThunk(
   'users/loginUser',
@@ -8,12 +9,7 @@ export const loginUser = createAsyncThunk(
       const { data } = await axios.post('/api/users/login', loginDetails)
       return data
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString()
+      const message = setMessage(error)
       return thunkAPI.rejectWithValue(message)
     }
   }
@@ -26,12 +22,7 @@ export const registerUser = createAsyncThunk(
       const { data } = await axios.post('/api/users', userDetails)
       return data
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString()
+      const message = setMessage(error)
       return thunkAPI.rejectWithValue(message)
     }
   }
@@ -54,12 +45,7 @@ export const updateUser = createAsyncThunk(
       )
       return data
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString()
+      const message = setMessage(error)
       return thunkAPI.rejectWithValue(message)
     }
   }
@@ -77,12 +63,7 @@ export const getUsers = createAsyncThunk(
       const { data } = await axios.get('/api/users', config)
       return data
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString()
+      const message = setMessage(error)
       return thunkAPI.rejectWithValue(message)
     }
   }
