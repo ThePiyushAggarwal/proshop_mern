@@ -6,7 +6,7 @@ const {
   updateOrderToPaid,
   getMyOrders,
 } = require('../controllers/order.controller')
-const protect = require('../middleware/authMiddleware')
+const { protect } = require('../middleware/authMiddleware')
 
 router.post('/', protect, addOrder)
 router.get('/myOrders', protect, getMyOrders)

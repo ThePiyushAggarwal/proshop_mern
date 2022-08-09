@@ -82,4 +82,18 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 })
 
-module.exports = { authUser, registerUser, getUserProfile, updateUserProfile }
+// @desc Get all users
+// @route GET /api/users
+// @access Private/Admin
+const getUsers = asyncHandler(async (_req, res) => {
+  const users = await User.find({})
+  res.send(users)
+})
+
+module.exports = {
+  authUser,
+  registerUser,
+  getUserProfile,
+  updateUserProfile,
+  getUsers,
+}
