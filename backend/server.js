@@ -22,6 +22,10 @@ app.use('/api/products', require('./routes/product.routes'))
 app.use('/api/users', require('./routes/user.routes'))
 app.use('/api/orders', require('./routes/order.routes'))
 
+app.get('/api/config/paypal', (_req, res) => {
+  res.send(process.env.PAYPAL_CLIENT_ID)
+})
+
 // Error Handler
 app.use(notFound)
 app.use(errorHandler)

@@ -50,7 +50,7 @@ export const getOrderDetails = createAsyncThunk(
 
 export const orderPay = createAsyncThunk(
   'orders/orderPay',
-  async (orderId, paymentResult, thunkAPI) => {
+  async (paymentResult, thunkAPI) => {
     try {
       const config = {
         headers: {
@@ -58,8 +58,8 @@ export const orderPay = createAsyncThunk(
         },
       }
       const { data } = await axios.put(
-        `/api/orders/${orderId}/`,
-        paymentResult,
+        `/api/orders/${paymentResult.orderId}/pay`,
+        paymentResult.details,
         config
       )
       return data
@@ -122,12 +122,13 @@ export const orderSlice = createSlice({
         state.loading = true
         state.orderPaySuccess = false
       })
-      .addCase(orderPay.fulfilled, (state, { payload }) => {
+      .addCase(orderPay.fulfilled, (state, payload) => {
         state.orderPaySuccess = true
         state.loading = false
       })
       .addCase(orderPay.rejected, (state, { payload }) => {
         state.loading = false
+        state.orderPaySuccess = false
         state.error = payload
       })
   },

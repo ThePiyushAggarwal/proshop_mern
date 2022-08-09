@@ -1,6 +1,5 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import Button from 'react-bootstrap/Button'
 import Alert from 'react-bootstrap/Alert'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -13,14 +12,20 @@ import {
   getOrderDetails,
   resetOrderId,
   resetOrderState,
+  orderPay,
 } from '../features/orders/orderSlice'
+import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js'
+import axios from 'axios'
 
 export default function Order() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { orderId } = useParams()
+  const [clientId, setClientId] = useState('')
   const loggedInUser = useSelector((state) => state.user.user)
-  const { order, loading, error } = useSelector((state) => state.order)
+  const { order, loading, error, orderPaySuccess } = useSelector(
+    (state) => state.order
+  )
   const {
     _id,
     shippingAddress,
@@ -49,10 +54,22 @@ export default function Order() {
     if (!loggedInUser) {
       return navigate('/login')
     }
+    const getClientId = async () => {
+      const { data: clientId } = await axios.get('/api/config/paypal')
+      setClientId(clientId)
+    }
+    getClientId()
     if (order._id !== orderId) {
       dispatch(getOrderDetails(orderId))
     }
   }, [navigate, loggedInUser, dispatch, orderId, order])
+
+  useEffect(() => {
+    if (orderPaySuccess) {
+      dispatch(resetOrderState())
+      dispatch(getOrderDetails(orderId))
+    }
+  }, [orderPaySuccess, dispatch, orderId])
 
   // Function to show a number to 2 decimal places
   const addDecimals = (num) => {
@@ -154,6 +171,30 @@ export default function Order() {
                   <Col>${addDecimals(totalPrice)}</Col>
                 </Row>
               </ListGroup.Item>
+              {!order.isPaid && (
+                <ListGroup.Item>
+                  <PayPalScriptProvider options={{ 'client-id': clientId }}>
+                    <PayPalButtons
+                      createOrder={(_data, actions) => {
+                        return actions.order.create({
+                          purchase_units: [
+                            {
+                              amount: {
+                                value: totalPrice,
+                              },
+                            },
+                          ],
+                        })
+                      }}
+                      onApprove={(_data, actions) => {
+                        return actions.order.capture().then((details) => {
+                          dispatch(orderPay({ orderId, details }))
+                        })
+                      }}
+                    />
+                  </PayPalScriptProvider>
+                </ListGroup.Item>
+              )}
             </ListGroup>
           </Card>
         </Col>
