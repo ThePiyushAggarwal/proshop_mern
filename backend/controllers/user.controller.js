@@ -102,6 +102,48 @@ const deleteUser = asyncHandler(async (req, res) => {
   res.json({ message: 'User removed' })
 })
 
+// @desc Get user by Id
+// @route GET /api/users/:id
+// @access Private/Admin
+const getUserById = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id).select('-password')
+  if (!user) {
+    res.status(400)
+    throw new Error('User not found')
+  }
+  res.json(user)
+})
+
+// @desc Update user
+// @route PUT /api/users/:id
+// @access Private/Admin
+const updateUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id)
+  if (user) {
+    user.name = req.body.name || user.name
+    user.email = req.body.email || user.email
+    if (req.body.isAdmin !== undefined) {
+      user.isAdmin = req.body.isAdmin
+    }
+  }
+
+  try {
+    const updatedUser = await user.save()
+    if (updatedUser) {
+      res.send({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin,
+      })
+    }
+  } catch (error) {
+    if (error.code === 11000) {
+      throw new Error('Email already exists')
+    }
+  }
+})
+
 module.exports = {
   authUser,
   registerUser,
@@ -109,4 +151,6 @@ module.exports = {
   updateUserProfile,
   getUsers,
   deleteUser,
+  getUserById,
+  updateUser,
 }
