@@ -51,53 +51,11 @@ export const updateUser = createAsyncThunk(
   }
 )
 
-export const getUsers = createAsyncThunk(
-  'users/getUsers',
-  async (_, thunkAPI) => {
-    try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-        },
-      }
-      const { data } = await axios.get('/api/users', config)
-      return data
-    } catch (error) {
-      const message = setMessage(error)
-      return thunkAPI.rejectWithValue(message)
-    }
-  }
-)
-
-export const deleteUser = createAsyncThunk(
-  'users/deleteUser',
-  async (id, thunkAPI) => {
-    try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-        },
-      }
-      const { data } = await axios.delete(`/api/users/${id}`, config)
-      return data
-    } catch (error) {
-      const message = setMessage(error)
-      return thunkAPI.rejectWithValue(message)
-    }
-  }
-)
-
 const initialState = {
   user: JSON.parse(localStorage.getItem('userInfo')) || null,
   loading: false,
   error: '',
   updateSuccess: false,
-  // Users List States
-  userList: [],
-  loadingUserList: false,
-  errorUserList: '',
-  //
-  successDelete: false,
 }
 
 export const userSlice = createSlice({
@@ -155,30 +113,6 @@ export const userSlice = createSlice({
       .addCase(updateUser.rejected, (state, { payload }) => {
         state.loading = false
         state.error = payload
-      })
-      //
-      .addCase(getUsers.pending, (state) => {
-        state.loadingUserList = true
-        state.errorUserList = ''
-      })
-      .addCase(getUsers.fulfilled, (state, { payload }) => {
-        state.loadingUserList = false
-        state.userList = payload
-        state.errorUserList = ''
-      })
-      .addCase(getUsers.rejected, (state, { payload }) => {
-        state.loadingUserList = false
-        state.errorUserList = payload
-      })
-      //
-      .addCase(deleteUser.pending, (state) => {
-        state.successDelete = false
-      })
-      .addCase(deleteUser.fulfilled, (state) => {
-        state.successDelete = true
-      })
-      .addCase(deleteUser.rejected, (state) => {
-        state.successDelete = false
       })
   },
 })

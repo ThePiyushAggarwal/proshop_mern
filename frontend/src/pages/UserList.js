@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { FaTimes, FaCheck, FaTrash, FaEdit } from 'react-icons/fa'
 import { useSelector, useDispatch } from 'react-redux'
-import { getUsers, deleteUser } from '../features/users/userSlice'
+import { getUsers, deleteUser } from '../features/admin/adminSlice'
 import Loader from '../components/Loader'
 import Table from 'react-bootstrap/Table'
 import Button from 'react-bootstrap/Button'
@@ -11,8 +11,9 @@ import Alert from 'react-bootstrap/Alert'
 export default function UsersList() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { user, loadingUserList, errorUserList, userList, successDelete } =
-    useSelector((state) => state.user)
+  const { user } = useSelector((state) => state.user)
+  const { loadingUserList, errorUserList, userList, successDelete } =
+    useSelector((state) => state.admin)
 
   useEffect(() => {
     if (!user) {
@@ -66,7 +67,7 @@ export default function UsersList() {
                 <td>
                   <Button
                     as={Link}
-                    to={`/user/${user._id}/edit`}
+                    to={`/admin/user/${user._id}/edit`}
                     variant='light'
                   >
                     <FaEdit />
