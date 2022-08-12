@@ -77,6 +77,24 @@ export const updateUser = createAsyncThunk(
   }
 )
 
+// Product Delete
+export const deleteProduct = createAsyncThunk(
+  'admin/deleteProduct',
+  async (id, thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      }
+      await axios.delete(`/api/products/${id}`, config)
+    } catch (error) {
+      const message = setMessage(error)
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 const initialState = {
   // Users List States
   userList: [],
@@ -92,6 +110,8 @@ const initialState = {
   userUpdating: false,
   userUpdateSuccess: false,
   userUpdateError: '',
+  //
+  productDeleteSuccess: false,
 }
 
 export const adminSlice = createSlice({
@@ -156,6 +176,16 @@ export const adminSlice = createSlice({
         state.userUpdating = false
         state.userUpdateError = payload
         state.userUpdateSuccess = false
+      })
+      //
+      .addCase(deleteProduct.pending, (state) => {
+        state.productDeleteSuccess = false
+      })
+      .addCase(deleteProduct.fulfilled, (state) => {
+        state.productDeleteSuccess = true
+      })
+      .addCase(deleteProduct.rejected, (state) => {
+        state.productDeleteSuccess = false
       })
   },
 })

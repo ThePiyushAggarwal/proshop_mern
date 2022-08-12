@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { FaTrash, FaEdit, FaPlus } from 'react-icons/fa'
 import { useSelector, useDispatch } from 'react-redux'
 import { getProducts } from '../features/products/productSlice'
+import { deleteProduct } from '../features/admin/adminSlice'
 import Loader from '../components/Loader'
 import Table from 'react-bootstrap/Table'
 import Button from 'react-bootstrap/Button'
@@ -15,6 +16,7 @@ export default function ProductList() {
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.user)
   const { error, loading, products } = useSelector((state) => state.product)
+  const { productDeleteSuccess } = useSelector((state) => state.admin)
 
   useEffect(() => {
     if (!user) {
@@ -24,11 +26,11 @@ export default function ProductList() {
       navigate('/')
     }
     dispatch(getProducts())
-  }, [dispatch, user, navigate])
+  }, [dispatch, user, navigate, productDeleteSuccess])
 
   const deleteHandler = (id) => {
     if (window.confirm('Are you sure?')) {
-      // DELETE PRODUCT
+      dispatch(deleteProduct(id))
     }
   }
 
