@@ -13,6 +13,7 @@ import Payment from './pages/Payment'
 import PlaceOrder from './pages/PlaceOrder'
 import Order from './pages/Order'
 import UserList from './pages/UserList'
+import EditUser from './pages/EditUser'
 import PageNotFound from './pages/PageNotFound'
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
                 <Route path=':id' element={<Cart />} />
               </Route>
               <Route path='/admin/userList' element={<UserList />} />
+              <Route path='/admin/user/:id/edit' element={<EditUser />} />
               <Route path='*' element={<PageNotFound />} />
             </Routes>
           </Container>
