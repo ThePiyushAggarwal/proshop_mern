@@ -9,7 +9,7 @@ import ListGroup from 'react-bootstrap/ListGroup'
 import Image from 'react-bootstrap/Image'
 import Card from 'react-bootstrap/Card'
 import { useNavigate, Link } from 'react-router-dom'
-import { createOrder, resetOrderState } from '../features/orders/orderSlice'
+import { createOrder } from '../features/orders/orderSlice'
 
 export default function PlaceOrder() {
   const dispatch = useDispatch()

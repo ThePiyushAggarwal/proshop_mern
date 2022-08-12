@@ -3,7 +3,7 @@ import axios from 'axios'
 import setMessage from '../../utils/setMessage'
 
 export const getUsers = createAsyncThunk(
-  'users/getUsers',
+  'admin/getUsers',
   async (_, thunkAPI) => {
     try {
       const config = {
@@ -21,7 +21,7 @@ export const getUsers = createAsyncThunk(
 )
 
 export const deleteUser = createAsyncThunk(
-  'users/deleteUser',
+  'admin/deleteUser',
   async (id, thunkAPI) => {
     try {
       const config = {

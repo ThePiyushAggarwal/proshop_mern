@@ -98,9 +98,7 @@ export const orderSlice = createSlice({
     resetOrderId: (state) => {
       state.orderId = ''
     },
-    resetOrderState: (state) => {
-      state = initialState
-    },
+    resetOrderState: () => initialState,
   },
   extraReducers: (builder) => {
     builder
