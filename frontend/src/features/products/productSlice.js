@@ -39,24 +39,32 @@ export const productSlice = createSlice({
     builder
       .addCase(getProducts.pending, (state) => {
         state.loading = true
+        state.products = []
+        state.error = ''
       })
       .addCase(getProducts.fulfilled, (state, { payload }) => {
         state.loading = false
         state.products = payload
+        state.error = ''
       })
       .addCase(getProducts.rejected, (state, { payload }) => {
         state.loading = false
+        state.products = []
         state.error = payload
       })
       .addCase(getProductById.pending, (state) => {
         state.loading = true
+        state.product = {}
+        state.error = ''
       })
       .addCase(getProductById.fulfilled, (state, { payload }) => {
         state.loading = false
         state.product = payload
+        state.error = ''
       })
       .addCase(getProductById.rejected, (state, { payload }) => {
         state.loading = false
+        state.product = {}
         state.error = payload
       })
   },
