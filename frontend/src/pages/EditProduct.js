@@ -8,6 +8,7 @@ import Loader from '../components/Loader'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Alert from 'react-bootstrap/Alert'
+import axios from 'axios'
 
 export default function EditProduct() {
   const dispatch = useDispatch()
@@ -21,15 +22,15 @@ export default function EditProduct() {
   const [formData, setFormData] = useState({
     name: '',
     price: 0,
-    image: '',
     brand: '',
     category: '',
     countInStock: 0,
     description: '',
   })
+  const [image, setImage] = useState('')
+  const [uploading, setUploading] = useState(false)
 
-  const { name, price, image, brand, category, countInStock, description } =
-    formData
+  const { name, price, brand, category, countInStock, description } = formData
 
   useEffect(() => {
     if (!loggedInUser?.isAdmin) {
@@ -57,7 +58,7 @@ export default function EditProduct() {
 
   const onSubmit = (e) => {
     e.preventDefault()
-    dispatch(updateProduct({ id, details: { ...formData } }))
+    dispatch(updateProduct({ id, details: { ...formData, image } }))
   }
 
   const onChange = (e) => {
@@ -65,6 +66,26 @@ export default function EditProduct() {
       ...prevState,
       [e.target.name]: e.target.value,
     }))
+  }
+
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0]
+    const formData = new FormData()
+    formData.append('image', file)
+    setUploading(true)
+    try {
+      const config = {
+        header: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+      const { data } = await axios.post('/api/uploads', formData, config)
+      setImage(data)
+      setUploading(false)
+    } catch (error) {
+      console.log(error)
+      setUploading(false)
+    }
   }
 
   return (
@@ -103,13 +124,12 @@ export default function EditProduct() {
           <Form.Group controlId='image' className='py-3'>
             <Form.Label>Image</Form.Label>
             <Form.Control
-              type='text'
-              name='image'
-              placeholder='Enter Image'
+              type='file'
               required
-              value={image}
-              onChange={onChange}
+              onChange={uploadFileHandler}
+              accept='image/png, image/jpeg'
             />
+            {uploading && <Loader />}
           </Form.Group>
           <Form.Group controlId='brand' className='py-3'>
             <Form.Label>Brand</Form.Label>
