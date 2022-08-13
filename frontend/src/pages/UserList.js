@@ -16,9 +16,6 @@ export default function UsersList() {
     useSelector((state) => state.admin)
 
   useEffect(() => {
-    if (!user) {
-      navigate('/')
-    }
     if (!user?.isAdmin) {
       navigate('/')
     }

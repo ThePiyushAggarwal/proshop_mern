@@ -19,9 +19,6 @@ export default function ProductList() {
   const { productDeleteSuccess } = useSelector((state) => state.admin)
 
   useEffect(() => {
-    if (!user) {
-      navigate('/')
-    }
     if (!user?.isAdmin) {
       navigate('/')
     }
@@ -34,10 +31,6 @@ export default function ProductList() {
     }
   }
 
-  const createProductHandler = () => {
-    // CREATE PRODUCT
-  }
-
   return (
     <>
       <Row className='py-3'>
@@ -45,7 +38,7 @@ export default function ProductList() {
           <h1>Products</h1>
         </Col>
         <Col className='d-flex justify-content-end align-items-center'>
-          <Button onClick={createProductHandler}>
+          <Button onClick={() => navigate('/admin/product/new')}>
             <FaPlus /> Create Product
           </Button>
         </Col>

@@ -95,6 +95,47 @@ export const deleteProduct = createAsyncThunk(
   }
 )
 
+// Product Create - Sample
+export const createProduct = createAsyncThunk(
+  'admin/createProduct',
+  async (productDetails, thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      }
+      await axios.post(`/api/products`, productDetails, config)
+    } catch (error) {
+      const message = setMessage(error)
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+// Product Update
+export const updateProduct = createAsyncThunk(
+  'admin/updateProduct',
+  async (productDetails, thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      }
+      const { data } = await axios.put(
+        `/api/products/${productDetails.id}`,
+        productDetails.details,
+        config
+      )
+      return data
+    } catch (error) {
+      const message = setMessage(error)
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 const initialState = {
   // Users List States
   userList: [],
@@ -112,6 +153,14 @@ const initialState = {
   userUpdateError: '',
   //
   productDeleteSuccess: false,
+  //
+  productNewLoading: false,
+  productNewSuccess: false,
+  productNewError: '',
+  //
+  productUpdateLoading: false,
+  productUpdateSuccess: false,
+  productUpdateError: '',
 }
 
 export const adminSlice = createSlice({
@@ -119,6 +168,16 @@ export const adminSlice = createSlice({
   initialState,
   reducers: {
     resetAdminState: () => initialState,
+    resetProductNew: (state) => {
+      state.productNewLoading = false
+      state.productNewSuccess = false
+      state.productNewError = ''
+    },
+    resetProductUpdate: (state) => {
+      state.productUpdateLoading = false
+      state.productUpdateSuccess = false
+      state.productUpdateError = ''
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -187,9 +246,42 @@ export const adminSlice = createSlice({
       .addCase(deleteProduct.rejected, (state) => {
         state.productDeleteSuccess = false
       })
+      //
+      .addCase(createProduct.pending, (state) => {
+        state.productNewLoading = true
+        state.productNewSuccess = false
+        state.productNewError = ''
+      })
+      .addCase(createProduct.fulfilled, (state) => {
+        state.productNewLoading = false
+        state.productNewSuccess = true
+        state.productNewError = ''
+      })
+      .addCase(createProduct.rejected, (state, { payload }) => {
+        state.productNewLoading = false
+        state.productNewSuccess = false
+        state.productNewError = payload
+      })
+      //
+      .addCase(updateProduct.pending, (state) => {
+        state.productUpdateLoading = true
+        state.productUpdateSuccess = false
+        state.productUpdateError = ''
+      })
+      .addCase(updateProduct.fulfilled, (state) => {
+        state.productUpdateLoading = false
+        state.productUpdateSuccess = true
+        state.productUpdateError = ''
+      })
+      .addCase(updateProduct.rejected, (state, { payload }) => {
+        state.productUpdateLoading = false
+        state.productUpdateSuccess = false
+        state.productUpdateError = payload
+      })
   },
 })
 
-export const { resetAdminState } = adminSlice.actions
+export const { resetAdminState, resetProductNew, resetProductUpdate } =
+  adminSlice.actions
 
 export default adminSlice.reducer

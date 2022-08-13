@@ -15,6 +15,8 @@ import Order from './pages/Order'
 import UserList from './pages/UserList'
 import EditUser from './pages/EditUser'
 import ProductList from './pages/ProductList'
+import NewProduct from './pages/NewProduct'
+import EditProduct from './pages/EditProduct'
 import PageNotFound from './pages/PageNotFound'
 
 function App() {
@@ -40,6 +42,8 @@ function App() {
               <Route path='/admin/userList' element={<UserList />} />
               <Route path='/admin/user/:id/edit' element={<EditUser />} />
               <Route path='/admin/productList' element={<ProductList />} />
+              <Route path='/admin/product/new' element={<NewProduct />} />
+              <Route path='/admin/product/:id/edit' element={<EditProduct />} />
               <Route path='*' element={<PageNotFound />} />
             </Routes>
           </Container>
