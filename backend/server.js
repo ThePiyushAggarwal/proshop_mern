@@ -28,7 +28,7 @@ app.get('/api/config/paypal', (_req, res) => {
   res.send(process.env.PAYPAL_CLIENT_ID)
 })
 
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
+app.use('/uploads', express.static(path.join(__dirname, '../', 'uploads')))
 
 // Error Handler
 app.use(notFound)
