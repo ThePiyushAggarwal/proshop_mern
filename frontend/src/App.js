@@ -18,6 +18,7 @@ import ProductList from './pages/ProductList'
 import NewProduct from './pages/NewProduct'
 import EditProduct from './pages/EditProduct'
 import OrderList from './pages/OrderList'
+import OrderViewAdmin from './pages/OrderViewAdmin'
 import PageNotFound from './pages/PageNotFound'
 
 function App() {
@@ -46,6 +47,10 @@ function App() {
               <Route path='/admin/product/new' element={<NewProduct />} />
               <Route path='/admin/product/:id/edit' element={<EditProduct />} />
               <Route path='/admin/orderList' element={<OrderList />} />
+              <Route
+                path='/admin/order/:orderId'
+                element={<OrderViewAdmin />}
+              />
               <Route path='*' element={<PageNotFound />} />
             </Routes>
           </Container>

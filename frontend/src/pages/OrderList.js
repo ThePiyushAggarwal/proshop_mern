@@ -65,7 +65,11 @@ export default function OrderList() {
                   )}
                 </td>
                 <td>
-                  <Button as={Link} to={`/order/${order._id}`} variant='light'>
+                  <Button
+                    as={Link}
+                    to={`/admin/order/${order._id}`}
+                    variant='light'
+                  >
                     Details
                   </Button>
                 </td>

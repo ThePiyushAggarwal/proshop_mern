@@ -82,10 +82,55 @@ const getOrders = asyncHandler(async (req, res) => {
   res.json(orders)
 })
 
+// @desc Update order to be delivered
+// @route PUT /api/orders/:id/deliver
+// @access Private
+const updateOrderToDelivered = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id)
+  if (!order) {
+    res.status(404)
+    throw new Error('Order not found')
+  }
+  // If not already paid, we want to update to paid in COD
+  if (!order.isPaid) {
+    const updatedOrder = await Order.findByIdAndUpdate(
+      req.params.id,
+      {
+        paymentMethod: 'COD',
+        isPaid: true,
+        paidAt: Date.now(),
+        isDelivered: true,
+        deliveredAt: Date.now(),
+      },
+      { new: true, runValidators: true }
+    )
+    if (!updatedOrder) {
+      res.status(500)
+      throw new Error('Something went wrong!')
+    }
+    return res.json(updatedOrder)
+  }
+  // If order already paid
+  const updatedOrder = await Order.findByIdAndUpdate(
+    req.params.id,
+    {
+      isDelivered: true,
+      deliveredAt: Date.now(),
+    },
+    { new: true, runValidators: true }
+  )
+  if (!updatedOrder) {
+    res.status(500)
+    throw new Error('Something went wrong!')
+  }
+  res.json(updatedOrder)
+})
+
 module.exports = {
   addOrder,
   getOrderById,
   updateOrderToPaid,
   getMyOrders,
   getOrders,
+  updateOrderToDelivered,
 }

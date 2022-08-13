@@ -155,6 +155,24 @@ export const getOrders = createAsyncThunk(
   }
 )
 
+// Orders - mark delivered
+export const orderDeliver = createAsyncThunk(
+  'admin/orderDeliver',
+  async (id, thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      }
+      await axios.put(`/api/orders/${id}/deliver`, {}, config)
+    } catch (error) {
+      const message = setMessage(error)
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 const initialState = {
   // Users List States
   userList: [],
@@ -184,6 +202,10 @@ const initialState = {
   orderList: [],
   loadingOrderList: false,
   errorOrderList: '',
+  //
+  orderDeliverLoading: false,
+  orderDeliverSuccess: false,
+  orderDeliverError: '',
 }
 
 export const adminSlice = createSlice({
@@ -200,6 +222,11 @@ export const adminSlice = createSlice({
       state.productUpdateLoading = false
       state.productUpdateSuccess = false
       state.productUpdateError = ''
+    },
+    resetOrderDeliver: (state) => {
+      state.orderDeliverLoading = false
+      state.orderDeliverSuccess = false
+      state.orderDeliverError = ''
     },
   },
   extraReducers: (builder) => {
@@ -317,10 +344,30 @@ export const adminSlice = createSlice({
         state.orderList = []
         state.errorOrderList = payload
       })
+      //
+      .addCase(orderDeliver.pending, (state) => {
+        state.orderDeliverLoading = true
+        state.orderDeliverSuccess = false
+        state.orderDeliverError = ''
+      })
+      .addCase(orderDeliver.fulfilled, (state) => {
+        state.orderDeliverLoading = false
+        state.orderDeliverSuccess = true
+        state.orderDeliverError = ''
+      })
+      .addCase(orderDeliver.rejected, (state, { payload }) => {
+        state.orderDeliverLoading = false
+        state.orderDeliverSuccess = false
+        state.orderDeliverError = payload
+      })
   },
 })
 
-export const { resetAdminState, resetProductNew, resetProductUpdate } =
-  adminSlice.actions
+export const {
+  resetAdminState,
+  resetProductNew,
+  resetProductUpdate,
+  resetOrderDeliver,
+} = adminSlice.actions
 
 export default adminSlice.reducer
