@@ -136,6 +136,25 @@ export const updateProduct = createAsyncThunk(
   }
 )
 
+// Orders - Get all
+export const getOrders = createAsyncThunk(
+  'admin/getOrders',
+  async (_, thunkAPI) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      }
+      const { data } = await axios.get(`/api/orders`, config)
+      return data
+    } catch (error) {
+      const message = setMessage(error)
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 const initialState = {
   // Users List States
   userList: [],
@@ -161,6 +180,10 @@ const initialState = {
   productUpdateLoading: false,
   productUpdateSuccess: false,
   productUpdateError: '',
+  //
+  orderList: [],
+  loadingOrderList: false,
+  errorOrderList: '',
 }
 
 export const adminSlice = createSlice({
@@ -277,6 +300,22 @@ export const adminSlice = createSlice({
         state.productUpdateLoading = false
         state.productUpdateSuccess = false
         state.productUpdateError = payload
+      })
+      //
+      .addCase(getOrders.pending, (state) => {
+        state.loadingOrderList = true
+        state.orderList = []
+        state.errorOrderList = ''
+      })
+      .addCase(getOrders.fulfilled, (state, { payload }) => {
+        state.loadingOrderList = false
+        state.orderList = payload
+        state.errorOrderList = ''
+      })
+      .addCase(getOrders.rejected, (state, { payload }) => {
+        state.loadingOrderList = false
+        state.orderList = []
+        state.errorOrderList = payload
       })
   },
 })

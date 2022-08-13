@@ -5,10 +5,12 @@ const {
   getOrderById,
   updateOrderToPaid,
   getMyOrders,
+  getOrders,
 } = require('../controllers/order.controller')
-const { protect } = require('../middleware/authMiddleware')
+const { protect, isAdmin } = require('../middleware/authMiddleware')
 
 router.post('/', protect, addOrder)
+router.get('/', protect, isAdmin, getOrders)
 router.get('/myOrders', protect, getMyOrders)
 router.get('/:id', protect, getOrderById)
 router.put('/:id/pay', protect, updateOrderToPaid)
