@@ -37,18 +37,11 @@ const deleteProduct = asyncHandler(async (req, res) => {
 // @route POST /api/products
 // @access Private/Admin
 const createProduct = asyncHandler(async (req, res) => {
-  const product = new Product({
-    name: 'Sample name',
-    price: 0,
-    user: req.user._id,
-    image: '/images/sample.jpg',
-    brand: 'Sample brand',
-    category: 'Sample category',
-    countInStock: 0,
-    numReviews: 0,
-    description: 'Sample description',
-  })
-  const createdProduct = await Product.create(product)
+  const newProduct = {
+    ...req.body,
+    user: req.user.id,
+  }
+  const createdProduct = await Product.create(newProduct)
   res.status(201).json(createdProduct)
 })
 
@@ -58,9 +51,7 @@ const createProduct = asyncHandler(async (req, res) => {
 const updateProduct = asyncHandler(async (req, res) => {
   const updatedProduct = await Product.findByIdAndUpdate(
     req.params.id,
-    {
-      ...req.body,
-    },
+    { ...req.body },
     { new: true, runValidators: true }
   )
   if (!updatedProduct) {
