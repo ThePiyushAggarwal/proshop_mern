@@ -61,10 +61,67 @@ const updateProduct = asyncHandler(async (req, res) => {
   res.json(updatedProduct)
 })
 
+// @desc Create new review
+// @route POST /api/products/:id/reviews
+// @access Private
+const createProductReview = asyncHandler(async (req, res) => {
+  const { rating, comment } = req.body
+  const product = await Product.findById(req.params.id)
+  if (!product) {
+    res.status(400)
+    throw new Error('Product not found')
+  }
+  const alreadyReviewed = product.reviews.find(
+    (r) => r.user.toString() === req.user._id.toString()
+  )
+  if (alreadyReviewed) {
+    res.status(400)
+    throw new Error('Product already reviewed.')
+  }
+  const review = {
+    name: req.user.name,
+    rating,
+    comment,
+    user: req.user._id,
+  }
+  const updatedProduct = await Product.findByIdAndUpdate(
+    req.params.id,
+    {
+      $push: {
+        reviews: review,
+      },
+    },
+    { new: true, runValidators: true }
+  )
+  if (!updatedProduct) {
+    res.status(500)
+    throw new Error('Something went wrong')
+  }
+  const numReviews = updatedProduct.reviews.length
+  const averageRating =
+    updatedProduct.reviews.reduce((acc, item) => acc + item.rating, 0) /
+    updatedProduct.reviews.length
+  const updatedProduct2 = await Product.findByIdAndUpdate(
+    req.params.id,
+    {
+      numReviews,
+      rating: averageRating,
+    },
+    { new: true, runValidators: true }
+  )
+  if (!updatedProduct2) {
+    res.status(500)
+    throw new Error('Something went wrong')
+  }
+  res.status(201)
+  res.json({ message: 'Review added' })
+})
+
 module.exports = {
   getProducts,
   getProductById,
   deleteProduct,
   createProduct,
   updateProduct,
+  createProductReview,
 }
