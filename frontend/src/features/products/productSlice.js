@@ -4,8 +4,13 @@ import setMessage from '../../utils/setMessage'
 
 export const getProducts = createAsyncThunk(
   'products/getProducts',
-  async (_, thunkAPI) => {
+  async (search, thunkAPI) => {
     try {
+      if (search) {
+        return await axios
+          .get(`/api/products?search=${search}`)
+          .then((res) => res.data)
+      }
       return await axios.get('/api/products').then((res) => res.data)
     } catch (error) {
       const message = setMessage(error)

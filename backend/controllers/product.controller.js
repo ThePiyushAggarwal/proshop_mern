@@ -5,7 +5,15 @@ const asyncHandler = require('express-async-handler')
 // @route GET /api/products/
 // @access Public
 const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({})
+  const keyword = req.query.search
+    ? {
+        name: {
+          $regex: req.query.search,
+          $options: 'i',
+        },
+      }
+    : {}
+  const products = await Product.find(keyword)
   res.send(products)
 })
 
