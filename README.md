@@ -20,7 +20,7 @@ Objective and Functions
 - Admins can tweak user details too.
 - Admins can make other person admin who will have the same permissions as himself.
  
-## Sample Images
+## Project Images
 
 ### Home Page
 ![Screenshot (44)](https://user-images.githubusercontent.com/27003616/184537305-dd76dfb8-61c7-4b73-ba55-8a5efa34e6ad.png)
