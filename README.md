@@ -12,13 +12,13 @@ Tech used
 - JSON Web Token for authentication
 
 Objective and Functions
-• To build a clone of an eCommerce platform.
-• Products are added to cart and paid for by the Costumers using PayPal.
-• They can see their orders all at once. Tweak their profiles. Search for products. Add their address.
-• Admins can manage mark the orders as delivered.
-• Admins can add products and their images.
-• Admins can tweak user details too.
-• Admins can make other person admin who will have the same permissions as himself.
+- To build a clone of an eCommerce platform.
+- Products are added to cart and paid for by the Costumers using PayPal.
+- They can see their orders all at once. Tweak their profiles. Search for products. Add their address.
+- Admins can manage mark the orders as delivered.
+- Admins can add products and their images.
+- Admins can tweak user details too.
+- Admins can make other person admin who will have the same permissions as himself.
  
 ## Sample Images
 
