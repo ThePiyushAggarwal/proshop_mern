@@ -1,4 +1,4 @@
-# ProShop MERN
+# ProShop MERN in Redux Toolkit
 eCommerce website in MERN stack
 
 Live deployed link: https://proshop-mern-web.herokuapp.com/
@@ -13,6 +13,7 @@ Tech used
 
 Objective and Functions
 - To build a clone of an eCommerce platform.
+- Converted whole Redux code into Redux Toolkit as it is the new way of writing Redux
 - Products are added to cart and paid for by the Costumers using PayPal.
 - They can see their orders all at once. Tweak their profiles. Search for products. Add their address.
 - Admins can manage mark the orders as delivered.
