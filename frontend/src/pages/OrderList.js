@@ -25,7 +25,7 @@ export default function OrderList() {
 
   return (
     <>
-      <h1>Users</h1>
+      <h1>Orders</h1>
       {loadingOrderList ? (
         <Loader />
       ) : errorOrderList ? (
