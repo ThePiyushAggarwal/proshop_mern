@@ -66,6 +66,15 @@ const updateProduct = asyncHandler(async (req, res) => {
 // @access Private
 const createProductReview = asyncHandler(async (req, res) => {
   const { rating, comment } = req.body
+  // Checking the input
+  if (!rating || !comment) {
+    res.status(400)
+    throw new Error('Please add both Rating and Comment')
+  }
+  if (comment.length < 20) {
+    res.status(400)
+    throw new Error('Please add a comment with at least 20 characters.')
+  }
   const product = await Product.findById(req.params.id)
   if (!product) {
     res.status(400)
