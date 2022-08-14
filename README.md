@@ -37,7 +37,7 @@ Objective and Functions
 ### Admin Panel Images
 ![Screenshot (47)](https://user-images.githubusercontent.com/27003616/184537433-2a401b65-b822-4b13-ba0b-1844829aa389.png)
 ![Screenshot (48)](https://user-images.githubusercontent.com/27003616/184537435-0c2140a6-7dd9-4994-94fa-dde4e14cc481.png)
-![Screenshot (49)](https://user-images.githubusercontent.com/27003616/184537436-2a280739-d351-4c2f-a90f-b82e44aabc75.png)
+![Screenshot (57)](https://user-images.githubusercontent.com/27003616/184537730-806533a3-f1f3-4ac8-ac8c-f73341ebd80c.png)
 ![Screenshot (50)](https://user-images.githubusercontent.com/27003616/184537486-bf8e1bc0-6e74-456a-aaa6-0a2c5c4b35cb.png)
 
 ### Paying through PayPal
