@@ -4,12 +4,12 @@ eCommerce website in MERN stack
 Live deployed link: https://proshop-mern-web.herokuapp.com/
 
 Tech used
-• Redux Toolkit
-• React.js, Node.js, Mongoose, MongoDB, Express.js
-• React Bootstrap
-• PayPal API
-• Multer for uploading images
-• JSON Web Token for authentication
+- Redux Toolkit
+- React.js, Node.js, Mongoose, MongoDB, Express.js
+- React Bootstrap
+- PayPal API
+- Multer for uploading images
+- JSON Web Token for authentication
 
 Objective and Functions
 • To build a clone of an eCommerce platform.
