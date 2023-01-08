@@ -2,6 +2,7 @@
 eCommerce website in MERN stack
 
 Live deployed link: https://proshop-mern-web.herokuapp.com/
+
 Postman Backend API docs: https://documenter.getpostman.com/view/19789580/VUjSGPrW
 
 Tech used
@@ -46,3 +47,11 @@ Objective and Functions
 ![Screenshot (51)](https://user-images.githubusercontent.com/27003616/184537468-8b7d220d-c9f9-464a-adc0-94ae4a3c6fe1.png)
 ![Screenshot (54)](https://user-images.githubusercontent.com/27003616/184537482-a1e688ce-90f4-40a6-af7e-1260441d6753.png)
 
+## How to Run Locally
+- Add a `.env` file to the root of the project.
+- Copy and paste `.env.example` file contents into `.env`.
+- `PORT` refers to the backend service port. Generally, 5000.
+- `NODE_ENV` can have two values `development` and `production`.
+- `PAYPAL_CLIENT_ID` is for running the paypal integration in frontend.
+- `MONGO_URI` is the MongoDB connection string. **Required.**
+- `JWT_SECRET` is the key with JWT does encryption. **Required.**
