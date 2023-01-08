@@ -1,9 +1,9 @@
 # ProShop MERN in Redux Toolkit
 eCommerce website in MERN stack
 
-Live deployed link: https://proshop-mern-web.herokuapp.com/
+[Live deployed link](https://proshop-mern-web.herokuapp.com/)
 
-Postman Backend API docs: https://documenter.getpostman.com/view/19789580/VUjSGPrW
+[Postman Backend API docs](https://documenter.getpostman.com/view/19789580/VUjSGPrW)
 
 Tech used
 - Redux Toolkit
