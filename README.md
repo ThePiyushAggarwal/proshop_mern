@@ -64,5 +64,3 @@ Objective and Functions
 
 ![Screenshot (51)](https://user-images.githubusercontent.com/27003616/184537468-8b7d220d-c9f9-464a-adc0-94ae4a3c6fe1.png)
 ![Screenshot (54)](https://user-images.githubusercontent.com/27003616/184537482-a1e688ce-90f4-40a6-af7e-1260441d6753.png)
-
-un
