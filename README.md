@@ -2,8 +2,6 @@
 
 eCommerce website in MERN stack
 
-[Live deployed link](https://proshopmern-production.up.railway.app/)
-
 [Postman Backend API docs](https://documenter.getpostman.com/view/19789580/VUjSGPrW)
 
 Tech used
