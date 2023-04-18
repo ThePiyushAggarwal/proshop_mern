@@ -2,6 +2,8 @@
 
 eCommerce website in MERN stack
 
+[Live Deployment](https://proshop-8q51.onrender.com/)
+
 [Postman Backend API docs](https://documenter.getpostman.com/view/19789580/VUjSGPrW)
 
 Tech used
