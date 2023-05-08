@@ -37,8 +37,31 @@ function Login() {
   return (
     <FormContainer>
       <h1>Sign In</h1>
-      {error !== '' && <Alert variant='danger'>{error}</Alert>}
+      {/* Test Passwords */}
+      <Row className="py-3 gap-3">
+        <Col className="border border-danger">
+          <strong className="fw-bold">Test Admin Password</strong>
+          <div>
+            <strong className="fw-bold">Email:</strong> admin@example.com
+          </div>
+          <div>
+            <strong className="fw-bold">Password:</strong> 123456
+          </div>
+        </Col>
+        <Col className="border border-danger">
+          <strong className="fw-bold">Test Normal User Password</strong>
+          <div>
+            <strong className="fw-bold">Email:</strong> john@example.com
+          </div>
+          <div>
+            <strong className="fw-bold">Password:</strong> 123456
+          </div>
+        </Col>
+      </Row>
+
+      {error !== '' && <Alert variant="danger">{error}</Alert>}
       {loading && <Loader />}
+
       <Form onSubmit={onSubmit}>
         <Form.Group controlId='email' className='py-3'>
           <Form.Label>Email Address</Form.Label>
